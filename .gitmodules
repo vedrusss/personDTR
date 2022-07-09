@@ -1,0 +1,6 @@
+[submodule "externals/YOLOv6"]
+	path = externals/YOLOv6
+	url = https://dagshub.com/nirbarazida/YOLOv6
+[submodule "externals/deep-person-reid"]
+	path = externals/deep-person-reid
+	url = https://github.com/KaiyangZhou/deep-person-reid.git
