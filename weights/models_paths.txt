@@ -1,0 +1,3 @@
+Download detector and re-id models and put them into 'weights' folder:
+        - detector model https://drive.google.com/file/d/1UOjz7zbxqIovg3Pr-wMAOz7xcgUZc75u/view?usp=sharing
+        - re-id model https://drive.google.com/file/d/178fDv_e_O5g-ErcyTNF0O28H95AvVivY/view?usp=sharing

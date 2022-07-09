@@ -1,0 +1,30 @@
+# pip install -r requirements.txt
+# python3.8 environment
+
+numpy>=1.18.5
+Cython
+h5py
+Pillow
+six
+scipy>=1.4.1
+opencv-contrib-python==4.5.5.62
+matplotlib
+tb-nightly
+future
+yacs
+gdown
+flake8
+yapf
+isort==4.3.21
+imageio
+
+torch>=1.8.0
+torchvision>=0.9.0
+PyYAML>=5.3.1
+tqdm>=4.41.0
+addict>=2.4.0
+tensorboard>=2.7.0
+pycocotools>=2.0
+dvc>=2.9.3
+onnx>=1.10.0  # ONNX export
+thop  # FLOPs computation
