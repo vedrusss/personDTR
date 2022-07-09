@@ -18,11 +18,11 @@ to re-initialize lost tracker with corresponded detected object (in case of occl
 
     1.3 Download detector and re-id models and put them into 'weights' folder:
         
-        - detector model https://drive.google.com/file/d/1UOjz7zbxqIovg3Pr-wMAOz7xcgUZc75u/view?usp=sharing
+        - detector model: https://drive.google.com/file/d/1UOjz7zbxqIovg3Pr-wMAOz7xcgUZc75u/view?usp=sharing
         
-        - re-id model https://drive.google.com/file/d/178fDv_e_O5g-ErcyTNF0O28H95AvVivY/view?usp=sharing
+        - re-id model: https://drive.google.com/file/d/178fDv_e_O5g-ErcyTNF0O28H95AvVivY/view?usp=sharing
 
 2. Run the demo
     
-    python3 demo_vid.py -dm weights/yolov6s.pt -en osnet_x0_25 -ep weights/osnet_x0_25_imagenet.pth -i <video filepath>
+        python3 demo_vid.py -dm weights/yolov6s.pt -en osnet_x0_25 -ep weights/osnet_x0_25_imagenet.pth -i <video filepath>
 
