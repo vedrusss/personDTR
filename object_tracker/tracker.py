@@ -77,8 +77,8 @@ class MultiTracker(SelectedObjects):
         
         self.__frameNum += 1
         debugInfo = {'notCorrectedTrackedRoIs':notCorrectedTrackedRoIs,
-                     'active':[t.getInd() for t in self.__trackers if t.getActive()],
-                     'inactive':[t.getInd() for t in self.__trackers if not t.getActive() and len(t.getFVs()) > t.getFVsLimit()]}
+                     'active':[(t.getInd(), t.getActiveTime()) for t in self.__trackers if t.getActive()],
+                     'inactive':[(t.getInd(), t.getActiveTime()) for t in self.__trackers if not t.getActive() and len(t.getFVs()) > t.getFVsLimit()]}
         return rois, debugInfo
 
     def __closeEnough(self, detection: RoI, tracker: BaseTracker):

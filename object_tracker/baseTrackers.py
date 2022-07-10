@@ -43,6 +43,7 @@ class BaseTracker:
         self.__ind = ind
         self.__fvs = []
         self.__fvsLimit = 20
+        self.__activeTime = 0
         self.__initialize(frame, roi)
 
     def __initialize(self, frame, roi):
@@ -67,10 +68,14 @@ class BaseTracker:
         if self.__verbose: print("Tracker {} was re-detected {} (notApproved count {})".format(self.getInd(), self.__redetected, self.__notApproved))
         if self.__notApproved >= 10: # TODO: this parameter must be picked up or calculated
            self.setActive(False)
+        if self.getActive(): self.__activeTime += 1
         return self
 
     def getActive(self):
         return self.__active
+
+    def getActiveTime(self):
+        return self.__activeTime
 
     def getFVs(self):
         return self.__fvs

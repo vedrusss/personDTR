@@ -1,5 +1,6 @@
 """Demo script to detect, track and redetect persons onto video"""
 
+from copy import deepcopy
 import _init_paths
 import argparse
 
@@ -36,11 +37,19 @@ def plot_box_and_label(image, lw, box, label='', ind=0, txt_color=(255, 255, 255
         cv2.putText(image, label, (p1[0], p1[1] - 2 if outside else p1[1] + h + 2), 0, lw / 3, txt_color,
                     thickness=tf, lineType=cv2.LINE_AA)
 
-def plot_trackers(image, lw, active_inds, inactive_inds, txt_color=(255, 255, 255)):
-    msg = f"Tracked objects: {len(active_inds)} visible / {len(active_inds) + len(inactive_inds)} all detected"
-    tf = max(lw - 25, 1)  # font thickness
-    w, h = cv2.getTextSize(msg, 0, fontScale=lw / 3, thickness=tf)[0]  # text width, height
-    cv2.putText(image, msg, (0, h + 2), 0, lw / 3, txt_color, thickness=tf, lineType=cv2.LINE_AA)
+def plot_trackers(image, lw, fps, visible_objs, invisible_objs, txt_color=(255, 255, 255)):
+    def putText(image, msg, h, lw, txt_color):
+        mw, mh = cv2.getTextSize(msg, 0, fontScale=lw/2, thickness=1)[0]  # text width, height
+        h += mh + 3
+        cv2.putText(image, msg, (0, h), 0, lw / 3, txt_color, thickness=1, lineType=cv2.LINE_AA)
+        return h
+
+    h = putText(image, f"Visible {len(visible_objs)} persons", 0, lw, txt_color)
+    objs = deepcopy(visible_objs)
+    objs.update(invisible_objs)
+    msg = f"Detected at all {len(objs)}:"
+    h = putText(image, msg, h, lw, txt_color)
+    for ind in sorted(objs.keys()): h = putText(image, f" #{ind} : {int(objs[ind]/fps)} sec", h, lw, txt_color)
 
 def process_video(video_filepath, detector, fve):
     cap = cv2.VideoCapture(video_filepath)
@@ -48,6 +57,7 @@ def process_video(video_filepath, detector, fve):
         print(f"Cannot read video {video_filepath}")
         return
 
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
     mtracker = MultiTracker(trackerType='MOSSE', verbose=True)
 
     flag, img_src = cap.read()
@@ -69,9 +79,9 @@ def process_video(video_filepath, detector, fve):
             det_rois.append(RoI(ltrb, k, {'fv':fv}))
 
         rois, debub_info = mtracker(img_src, det_rois)
-        active_inds = debub_info['active']
-        inactive_inds = debub_info['inactive']
-        plot_trackers(img_src, max(round(sum(img_src.shape) / 2 * 0.003), 2), active_inds, inactive_inds)
+        visible_objs = {el[0]:el[1] for el in debub_info['active']}
+        invisible_objs = {el[0]:el[1] for el in debub_info['inactive']}
+        plot_trackers(img_src, max(round(sum(img_src.shape) / 2 * 0.003), 2), fps, visible_objs, invisible_objs)
         #print([(r.getBox(), r.getFeature('fv')) for r in rois])
 
         for roi in rois:
